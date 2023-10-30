@@ -1,0 +1,49 @@
+﻿@model CL2Abanto.Models.AlumnosResponse
+<h1>Información General</h1>
+<form method="post">
+    <!-- Campos del estudiante -->
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" id="nombre" name="Nombre" value="@Model.Nombre">
+    </div>
+    <div class="form-group">
+        <label for="apellido">Apellido:</label>
+        <input type="text" class="form-control" id="apellido" name="Apellido" value="@Model.Apellido">
+    </div>
+    <div class="form-group">
+        <label for="dni">DNI:</label>
+        <input type="text" class="form-control" id="dni" name="DNI" value="@Model.DNI">
+    </div>
+    <h2>Notas</h2>
+    <div id="notasContainer">
+        <!-- Espacio para listar las notas agregadas -->
+        @for (var i = 0; i < Model.Notas.Count; i++)
+        {
+            <div>
+                <label>Curso:</label>
+                <input type="text" name="Notas[@i].NombreCurso" value="@Model.Notas[i].NombreCurso" required>
+                <label>Nota:</label>
+                <input type="text" name="Notas[@i].Nota" value="@Model.Notas[i].Nota" required>
+            </div>
+        }
+    </div>
+    <button type="button" id="addNota" class="btn btn-primary">Añadir Nota</button>
+    <button type="submit" class="btn btn-success">Guardar</button>
+</form>
+@section Scripts{
+    <script type="text/javascript">
+        var notasCounter = @Model.Notas.Count;
+        document.getElementById('addNota').addEventListener('click', function () {
+            var notasContainer = document.getElementById('notasContainer');
+            var newNotaDiv = document.createElement('div');
+            newNotaDiv.innerHTML = `
+                        <label>Curso:</label>
+                        <input type="text" name="Notas[${notasCounter}].NombreCurso" required>
+                        <label>Nota:</label>
+                        <input type="text" name="Notas[${notasCounter}].Nota" required>
+                    `;
+            notasContainer.appendChild(newNotaDiv);
+            notasCounter++;
+        });
+    </script>
+}
